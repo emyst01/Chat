@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Chat bella</title>
+	<link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+</head>
+<body>
+    <pre id="output">{{ .Msg }}</pre>
+	<div class="content">
+		<input type="text" id="input">
+		<button onclick="send()">Send</button>
+	</div>
+</body>
+</html>
+
+<style>
+	body{
+		background-color: #6D5D6E;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+	}
+	.new-class{
+		padding: 10px;
+		color: white;
+		font-size: 20px;
+	}
+	.content{
+		display: flex;
+		flex-direction: row;
+		margin-right: 20px;
+		margin-left: 20px;
+	}
+	.content input{
+		width: 100%;
+		height: 50px;
+		outline: none;
+		font-size: 20px;
+		font-weight: 500;
+		padding-left: 10px;
+		color: white;
+		background-color: rgba(0, 0, 0, 0.214);
+		border: solid 1px white;
+	}
+	.content button{
+		width: 300px;
+		cursor: pointer;
+		background-color: rgba(0, 0, 0, 0.229);
+		border: none;
+		outline: none;
+		font-size: 30px;
+		font-weight: 600;
+		color: white;
+		background-color: rgba(0, 0, 0, 0.214);
+		border: solid 1px white;
+	}
+	#output{
+		width: 90%;
+		height: 580px;
+		background-color: rgba(255, 255, 255, 0.104);
+		border-radius: 20px 20px 0 0;
+	}
+</style>
+
+<script>
+	var input = document.getElementById('input');
+	var output = document.getElementById('output');
+	var socket = new WebSocket("ws://localhost:8080/echo");
+	input.focus;
+	document.addEventListener("keydown", (i) => {
+		if (i.key == "Enter") {
+			send();
+		}
+	});
+	output.classList.add("new-class");
+	socket.onmessage = (e) => {
+		output.innerHTML += e.data + "\n";
+	}
+	function send(){
+		socket.send(input.value);
+		input.value = "";
+	}
+</script>
